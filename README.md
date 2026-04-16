@@ -5,11 +5,15 @@ But slowly, something changed. The teacher was passionate, and the TAs were supe
 # Learning Cursor from scratch
 The first real challenge was writing code. Luckily, we used Cursor – an AI powered code editor. It was a lifesaver for a complete beginner like me. I didn’t have to memorize tons of commands. Instead, I could ask questions, try things out, and learn by doing. From running PowerShell scripts to understanding what make_clip_scene.ps1 actually does, to later tweaking parameters and fixing paths – every step was bumpy, but every step also gave me a small sense of achievement.
 # The group project: running it over and over again
+
 Our task was to reconstruct the AMtown02 UAV dataset using COLMAP and OpenSplat. On paper, it sounds simple: extract a subset of images, run COLMAP, then train OpenSplat. In reality, it was full of holes.
 First problem: disk space. My laptop doesn’t have much storage. The COLMAP database.db file could be several gigabytes, and the OpenSplat .ply output was huge too. I constantly had to delete old workspace folders and large files just to free up space. At one point, I even had to move some datasets to an external drive.
+
 Second problem: the program would freeze halfway, or throw a database is locked error. After digging around, I found out it was because COLMAP processes weren’t fully closed. The fix: kill all COLMAP instances, delete database.db, *.db-wal, *.db-shm and the entire sparse folder, then rerun. I must have done this at least ten times.
 The most frustrating part was the poor results. The first few 3D models had bright spots, missing parts, and the coverage area was way too small. Honestly, I felt pretty down. I thought maybe I was doing something fundamentally wrong.
+
 Then I started talking to my classmates. We compared our output images and realised that my sampling frequency was too low – taking every 10th frame wasn’t giving enough information. So I adjusted the decimation: I took more images (smaller step size, like every 5th frame) and expanded the overall frame range. I also learned from the Week 6 lecture materials that the densification and pruning steps in 3DGS are very sensitive to the initial point cloud quality. So I went back, cleaned up my COLMAP reconstruction, and reran everything.
+
 After more than ten tries – and many late nights watching the loss numbers slowly go down – I finally got a result that made me smile. The loss dropped from 0.227 to 0.101, a reduction of more than 55%. The final zsplat.ply file had over 2.1 million Gaussians. Seeing the clear, smooth 3D scene spin around on my screen felt really, really good.
 # What I truly learned
 If you ask me what the biggest takeaway from this project is, it’s not the 3DGS algorithm itself – though that is pretty cool. What I really gained is this: I learned how to face bugs on my own, how to search for solutions, how to tweak parameters, how to discuss with classmates, and how to keep trying even after failing more than ten times. That kind of persistence is something no textbook can teach you.
